@@ -1,4 +1,4 @@
-package baseball.model;
+package baseball.enums;
 
 public enum Confirmation {
     Y("1"),

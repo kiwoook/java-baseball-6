@@ -1,22 +1,22 @@
 package baseball.controller;
 
-import static baseball.utils.Constants.INPUT_LIMIT_LENGTH;
+import static baseball.utils.Constants.ALL_CORRECT;
+import static baseball.utils.Constants.LIMIT_LENGTH;
 
 import baseball.dto.CountDto;
-import baseball.model.Count;
 import baseball.model.Num;
 import baseball.model.Nums;
-import baseball.model.Target;
 import baseball.utils.StringUtils;
 import baseball.view.InputViewer;
 import baseball.view.OutputViewer;
+import camp.nextstep.edu.missionutils.Randoms;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class BaseballController {
 
     private static final String SEPARATOR = "";
-    private static final int ALL_CORRECT = 3;
 
 
     private final InputViewer inputViewer;
@@ -29,6 +29,7 @@ public class BaseballController {
 
     public void startGame() {
         boolean restart;
+        inputViewer.introduce();
         do {
             restart = startRound();
         } while (restart);
@@ -36,8 +37,7 @@ public class BaseballController {
 
     public boolean startRound() {
         int strike;
-        Target target = Target.create();
-        inputViewer.introduce();
+        Nums target = Nums.from(createRandomNumber());
         do {
             strike = findNumber(target);
         } while (strike != ALL_CORRECT);
@@ -45,12 +45,12 @@ public class BaseballController {
         return inputViewer.promptRestart();
     }
 
-    public int findNumber(Target target) {
+    public int findNumber(Nums target) {
         String input = inputViewer.promptInput();
         Nums nums = Nums.from(getNumbers(input));
-
-        Count count = Count.of(nums, target);
-        CountDto countDto = CountDto.create(count);
+        int strike = nums.countStrike(target);
+        int ball = nums.countBall(target, strike);
+        CountDto countDto = CountDto.create(strike, ball);
 
         outputViewer.result(countDto);
         return countDto.strike();
@@ -60,21 +60,26 @@ public class BaseballController {
     public List<Num> getNumbers(String input) {
         StringUtils.validInput(input);
         String[] splitInput = input.split(SEPARATOR);
-        validSplitInput(splitInput);
 
         return parseNumbers(splitInput);
-    }
-
-
-    private void validSplitInput(String[] splitInput) {
-        if (splitInput.length != INPUT_LIMIT_LENGTH) {
-            throw new IllegalArgumentException();
-        }
     }
 
     private List<Num> parseNumbers(String[] splitInput) {
         return Arrays.stream(splitInput)
                 .map(Num::from)
                 .toList();
+    }
+
+    public List<Num> createRandomNumber() {
+        List<Num> computer = new ArrayList<>();
+        while (computer.size() < LIMIT_LENGTH) {
+            Num randomNumber = Num.from(Randoms.pickNumberInRange(1, 9));
+            if (computer.contains(randomNumber)) {
+                continue;
+            }
+            computer.add(randomNumber);
+        }
+
+        return computer;
     }
 }

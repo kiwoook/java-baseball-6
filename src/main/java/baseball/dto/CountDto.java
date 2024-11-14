@@ -1,10 +1,8 @@
 package baseball.dto;
 
-import baseball.model.Count;
-
 public record CountDto(int strike, int ball) {
 
-    public static CountDto create(Count count) {
-        return new CountDto(count.getStrike(), count.getBall());
+    public static CountDto create(int strike, int ball) {
+        return new CountDto(strike, ball);
     }
 }

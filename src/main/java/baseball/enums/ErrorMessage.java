@@ -1,4 +1,4 @@
-package baseball.model;
+package baseball.enums;
 
 public enum ErrorMessage {
     VALID_INPUT("잘못된 입력입니다.");

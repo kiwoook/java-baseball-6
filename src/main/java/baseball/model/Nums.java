@@ -1,6 +1,6 @@
 package baseball.model;
 
-import static baseball.utils.Constants.INPUT_LIMIT_LENGTH;
+import static baseball.utils.Constants.LIMIT_LENGTH;
 
 import java.util.List;
 import java.util.Set;
@@ -19,16 +19,36 @@ public class Nums {
     }
 
     private void validNums(List<Num> items) {
-        if (items.size() != INPUT_LIMIT_LENGTH || items.size() != Set.copyOf(items).size()) {
+        int uniqueNumSize = Set.copyOf(items)
+                .size();
+        if (items.size() != LIMIT_LENGTH || items.size() != uniqueNumSize) {
             throw new IllegalArgumentException();
         }
     }
 
-    public int countStrike(Target target) {
-        return target.countStrike(items);
+    public int countStrike(Nums target) {
+        List<Num> targetItems = target.items;
+
+        int count = 0;
+        for (int i = 0; i < LIMIT_LENGTH; i++) {
+            if (targetItems.get(i).equals(items.get(i))) {
+                count++;
+            }
+        }
+
+        return count;
     }
 
-    public int countBall(Target target, int strike) {
-        return target.countBall(items, strike);
+    public int countBall(Nums target, int strike) {
+        List<Num> targetItems = target.items;
+
+        int count = 0;
+        for (int i = 0; i < LIMIT_LENGTH; i++) {
+            if (items.contains(targetItems.get(i))) {
+                count++;
+            }
+        }
+
+        return count - strike;
     }
 }

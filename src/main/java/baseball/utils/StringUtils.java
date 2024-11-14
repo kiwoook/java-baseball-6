@@ -1,6 +1,6 @@
 package baseball.utils;
 
-import static baseball.model.ErrorMessage.VALID_INPUT;
+import static baseball.enums.ErrorMessage.VALID_INPUT;
 
 public class StringUtils {
 

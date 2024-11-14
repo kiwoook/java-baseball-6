@@ -8,6 +8,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import camp.nextstep.edu.missionutils.test.NsTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 class ApplicationTest extends NsTest {
     @Test
@@ -39,9 +41,20 @@ class ApplicationTest extends NsTest {
     }
 
     @Test
-    void 예외_테스트() {
+    @DisplayName("재시작 검증 테스트")
+    void test2() {
+        assertRandomNumberInRangeTest(() -> {
+            run("123", "1", "123", "2");
+            assertThat(output()).contains("3스트라이크", "3개의 숫자를 모두 맞히셨습니다! 게임 종료", "게임을 새로 시작하려면 1, 종료하려면 2를 입력하세요.",
+                    "3개의 숫자를 모두 맞히셨습니다! 게임 종료");
+        }, 1, 2, 3, 1, 2, 3);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"1234", "-1234", "1200", "012", "42142134"})
+    void 예외_테스트(String input) {
         assertSimpleTest(() ->
-                assertThatThrownBy(() -> runException("1234"))
+                assertThatThrownBy(() -> runException(input))
                         .isInstanceOf(IllegalArgumentException.class)
         );
     }

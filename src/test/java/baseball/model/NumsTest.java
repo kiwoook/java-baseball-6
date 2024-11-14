@@ -53,8 +53,86 @@ class NumsTest {
         });
     }
 
+    @Test
+    @DisplayName("1 스트라이크 검증 테스트")
+    void test5() {
+        List<Integer> integers = List.of(1, 2, 3);
+        Nums target = Nums.from(toNums(integers));
+
+        integers = List.of(1, 4, 5);
+        Nums nums = Nums.from(toNums(integers));
+
+        assertThat(nums.countStrike(target)).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("2 스트라이크 검증 테스트")
+    void test6() {
+        List<Integer> integers = List.of(1, 2, 3);
+        Nums target = Nums.from(toNums(integers));
+
+        integers = List.of(1, 2, 5);
+        Nums nums = Nums.from(toNums(integers));
+
+        assertThat(nums.countStrike(target)).isEqualTo(2);
+    }
+
+
+    @Test
+    @DisplayName("3 스트라이크 검증 테스트")
+    void test7() {
+        List<Integer> integers = List.of(1, 2, 3);
+        Nums target = Nums.from(toNums(integers));
+
+        integers = List.of(1, 2, 3);
+        Nums nums = Nums.from(toNums(integers));
+
+        assertThat(nums.countStrike(target)).isEqualTo(3);
+    }
+
+    @Test
+    @DisplayName("1볼 검증 테스트")
+    void test9() {
+        List<Integer> integers = List.of(9, 1, 8);
+        Nums target = Nums.from(toNums(integers));
+
+        integers = List.of(1, 2, 3);
+        Nums nums = Nums.from(toNums(integers));
+
+        int strike = nums.countStrike(target);
+        assertThat(nums.countBall(target, strike)).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("2볼 검증 테스트")
+    void test10() {
+        List<Integer> integers = List.of(3, 1, 8);
+        Nums target = Nums.from(toNums(integers));
+
+        integers = List.of(1, 2, 3);
+        Nums nums = Nums.from(toNums(integers));
+
+        int strike = nums.countStrike(target);
+        assertThat(nums.countBall(target, strike)).isEqualTo(2);
+    }
+
+    @Test
+    @DisplayName("3볼 검증 테스트")
+    void test11() {
+        List<Integer> integers = List.of(3, 1, 2);
+        Nums target = Nums.from(toNums(integers));
+
+        integers = List.of(1, 2, 3);
+        Nums nums = Nums.from(toNums(integers));
+
+        int strike = nums.countStrike(target);
+        assertThat(nums.countBall(target, strike)).isEqualTo(3);
+    }
+
 
     private List<Num> toNums(List<Integer> integers) {
-        return integers.stream().map(Num::from).toList();
+        return integers.stream()
+                .map(Num::from)
+                .toList();
     }
 }
