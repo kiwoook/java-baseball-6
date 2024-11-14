@@ -1,5 +1,6 @@
 package baseball.model;
 
+import baseball.utils.StringUtils;
 import java.util.Objects;
 
 public class Num implements Comparable<Num> {
@@ -16,6 +17,7 @@ public class Num implements Comparable<Num> {
     }
 
     public static Num from(String number) {
+        StringUtils.validInput(number);
         return new Num(parseNumber(number));
     }
 

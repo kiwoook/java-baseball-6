@@ -1,5 +1,7 @@
 package baseball.model;
 
+import static baseball.utils.Constants.INPUT_LIMIT_LENGTH;
+
 import java.util.List;
 import java.util.Set;
 
@@ -17,7 +19,7 @@ public class Nums {
     }
 
     private void validNums(List<Num> items) {
-        if (items.size() != 3 || items.size() != Set.copyOf(items).size()) {
+        if (items.size() != INPUT_LIMIT_LENGTH || items.size() != Set.copyOf(items).size()) {
             throw new IllegalArgumentException();
         }
     }

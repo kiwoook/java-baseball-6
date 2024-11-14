@@ -1,12 +1,13 @@
 package baseball;
 
-import camp.nextstep.edu.missionutils.test.NsTest;
-import org.junit.jupiter.api.Test;
-
 import static camp.nextstep.edu.missionutils.test.Assertions.assertRandomNumberInRangeTest;
 import static camp.nextstep.edu.missionutils.test.Assertions.assertSimpleTest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import camp.nextstep.edu.missionutils.test.NsTest;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 class ApplicationTest extends NsTest {
     @Test
@@ -17,6 +18,23 @@ class ApplicationTest extends NsTest {
                     assertThat(output()).contains("낫싱", "3스트라이크", "1볼 1스트라이크", "3스트라이크", "게임 종료");
                 },
                 1, 3, 5, 5, 8, 9
+        );
+    }
+
+    @Test
+    @DisplayName("스트라이크, 볼 검증 테스트")
+    void test1() {
+        assertRandomNumberInRangeTest(
+                () -> {
+                    run("456", "918", "319", "312"
+                            , "189", "129",
+                            "921", "132", "123", "2");
+                    assertThat(output()).contains("낫싱", "1볼", "2볼", "3볼",
+                            "1스트라이크", "2스트라이크",
+                            "1볼 1스트라이크", "2볼 1스트라이크", "3스트라이크", "게임 종료"
+                    );
+                },
+                1, 2, 3
         );
     }
 

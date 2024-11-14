@@ -1,16 +1,23 @@
 package baseball.controller;
 
+import static baseball.utils.Constants.INPUT_LIMIT_LENGTH;
+
 import baseball.dto.CountDto;
 import baseball.model.Count;
 import baseball.model.Num;
 import baseball.model.Nums;
 import baseball.model.Target;
+import baseball.utils.StringUtils;
 import baseball.view.InputViewer;
 import baseball.view.OutputViewer;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class BaseballController {
+
+    private static final String SEPARATOR = "";
+    private static final int ALL_CORRECT = 3;
+
 
     private final InputViewer inputViewer;
     private final OutputViewer outputViewer;
@@ -33,7 +40,7 @@ public class BaseballController {
         inputViewer.introduce();
         do {
             strike = findNumber(target);
-        } while (strike != 3);
+        } while (strike != ALL_CORRECT);
 
         return inputViewer.promptRestart();
     }
@@ -41,40 +48,33 @@ public class BaseballController {
     public int findNumber(Target target) {
         String input = inputViewer.promptInput();
         Nums nums = Nums.from(getNumbers(input));
+
         Count count = Count.of(nums, target);
         CountDto countDto = CountDto.create(count);
+
         outputViewer.result(countDto);
         return countDto.strike();
     }
 
 
     public List<Num> getNumbers(String input) {
-        validInput(input);
-        String[] splitInput = input.split("");
+        StringUtils.validInput(input);
+        String[] splitInput = input.split(SEPARATOR);
         validSplitInput(splitInput);
 
         return parseNumbers(splitInput);
     }
 
-    private void validInput(String input) {
-        if (input == null || input.isBlank()) {
-            throw new IllegalArgumentException("잘못된 입력입니다.");
-        }
-
-    }
 
     private void validSplitInput(String[] splitInput) {
-        if (splitInput.length == 0 || splitInput.length > 3) {
+        if (splitInput.length != INPUT_LIMIT_LENGTH) {
             throw new IllegalArgumentException();
         }
     }
 
     private List<Num> parseNumbers(String[] splitInput) {
-        List<Num> input = new ArrayList<>();
-        for (String num : splitInput) {
-            input.add(Num.from(num));
-        }
-
-        return input;
+        return Arrays.stream(splitInput)
+                .map(Num::from)
+                .toList();
     }
 }
