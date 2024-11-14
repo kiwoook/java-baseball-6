@@ -21,8 +21,11 @@ public class Target {
     public List<Num> randomNums() {
         List<Num> computer = new ArrayList<>();
         while (computer.size() < 3) {
-            int randomNumber = Randoms.pickNumberInRange(1, 9);
-            computer.add(Num.from(randomNumber));
+            Num randomNumber = Num.from(Randoms.pickNumberInRange(1, 9));
+            if (computer.contains(randomNumber)) {
+                continue;
+            }
+            computer.add(randomNumber);
         }
 
         return computer;
@@ -30,11 +33,13 @@ public class Target {
 
     public int countStrike(List<Num> input) {
         int count = 0;
+
         for (int i = 0; i < MAX_SIZE; i++) {
             if (values.get(i).equals(input.get(i))) {
                 count++;
             }
         }
+
         return count;
     }
 

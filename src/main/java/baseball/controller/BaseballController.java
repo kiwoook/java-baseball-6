@@ -3,6 +3,7 @@ package baseball.controller;
 import baseball.dto.CountDto;
 import baseball.model.Count;
 import baseball.model.Num;
+import baseball.model.Nums;
 import baseball.model.Target;
 import baseball.view.InputViewer;
 import baseball.view.OutputViewer;
@@ -31,14 +32,19 @@ public class BaseballController {
         Target target = Target.create();
         inputViewer.introduce();
         do {
-            String input = inputViewer.promptInput();
-            Count count = Count.of(getNumbers(input), target);
-            CountDto countDto = CountDto.create(count);
-            outputViewer.result(countDto);
-            strike = countDto.getStrike();
+            strike = findNumber(target);
         } while (strike != 3);
 
         return inputViewer.promptRestart();
+    }
+
+    public int findNumber(Target target) {
+        String input = inputViewer.promptInput();
+        Nums nums = Nums.from(getNumbers(input));
+        Count count = Count.of(nums, target);
+        CountDto countDto = CountDto.create(count);
+        outputViewer.result(countDto);
+        return countDto.strike();
     }
 
 

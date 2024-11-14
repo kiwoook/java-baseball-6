@@ -12,6 +12,9 @@ public enum Confirmation {
     }
 
     public static boolean validInput(String input) {
+        if (input == null) {
+            throw new IllegalArgumentException();
+        }
         if (input.equals(Y.value)) {
             return true;
         }
